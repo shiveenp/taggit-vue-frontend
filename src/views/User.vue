@@ -3,26 +3,21 @@
         <div class="section">
             <h1 class="title">Welcome, {{ userName }}! 🤩</h1>
         </div>
-        <b-loading v-if="isLoading" :active="isLoading" :can-cancel="false" />
-        <template v-else-if="reposToDisplay.length">
-          <div class="section">
-              <b-tooltip class="is-pulled-right" label="Sync starred repos with github again">
-                  <button class="button is-primary has-tooltip" data-tooltip="Tooltip Text">
-                      <b-icon icon="reload"></b-icon>
-                      <span @click="resyncRepos">Resync</span>
-                  </button>
-              </b-tooltip>
-          </div>
-          <div class="section">
-              <TagsList />
-          </div>
-          <div class="section">
-              <Repos />
-          </div>
-        </template>
-        <template v-else>
-          <p class="no-repos">Create a new repos in  GitHub to start using.</p>
-        </template>
+        <b-loading v-if="isLoading" :active="isLoading" :can-cancel="false"/>
+        <div class="section">
+            <b-tooltip class="is-pulled-right" label="Sync starred repos with github again">
+                <button class="button is-primary has-tooltip" data-tooltip="Tooltip Text">
+                    <b-icon icon="reload"></b-icon>
+                    <span @click="resyncRepos">Resync</span>
+                </button>
+            </b-tooltip>
+        </div>
+        <div class="section">
+            <TagsList/>
+        </div>
+        <div class="section">
+            <Repos/>
+        </div>
         <footer class="footer">
             <div class="content has-text-centered">
                 <p>
@@ -58,17 +53,13 @@
       }
     },
     created() {
-      // redirect users back to the landing page if they haven't login yet
-      if (!this.githubUserId) {
-        this.$router.push('/');
-      }
       this.fetchUserDetails();
     }
   }
 </script>
 
 <style scoped>
-.no-repos {
-  text-align: center;
-}
+    .no-repos {
+        text-align: center;
+    }
 </style>
