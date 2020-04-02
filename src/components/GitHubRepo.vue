@@ -53,13 +53,15 @@
             },
             {
               'Content-Type': 'application/json'
-            })
+            });
+        this.$store.dispatch('addTag', tag);
       },
       removeTag(tag) {
         axios.delete(TAGGIT_BASE_API_URL + '/repo/' + this.id + '/tag/' + tag,
             {
               'Content-Type': 'application/json'
-            })
+            });
+        this.$store.dispatch('removeTag', tag);
       },
       mountTags() {
         if (!(this.metadata === undefined) && !(this.metadata === null)) {

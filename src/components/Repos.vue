@@ -2,7 +2,7 @@
     <div class="container is-fluid">
         <div class="columns is-multiline is-mobile">
             <div class="column" v-for="repo in reposToDisplay" :key="repo.id">
-                <GithubRepo 
+                <GithubRepo
                   :id="repo.id"
                   :repo-name="repo.repoName"
                   :github-link="repo.githubLink"
