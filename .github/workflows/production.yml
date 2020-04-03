@@ -1,13 +1,12 @@
 name: Production Build
 
 on:
-  pull_request:
-    push:
-      branches:
-        - master
+  push:
+    branches:
+      - master
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -18,6 +17,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.TAGGIT_S3_SECRET_ACCESS_KEY }}
           aws-region: ap-southeast-2
       - name: Build static site
-      - run: npm run build
+        run: npm run build
       - name: Deploy static site to S3 bucket
         run: aws s3 sync ./dist/ s3://taggit-ui --delete
