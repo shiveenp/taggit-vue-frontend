@@ -8,7 +8,7 @@
                     </figure>
                 </div>
                 <div class="media-content">
-                    <a class="has-text-weight-bold" :href="githubLink">{{ repoName }}</a>
+                    <a class="has-text-weight-bold" target="_blank" rel="noopener noreferrer" :href="githubLink">{{ repoName }}</a>
                 </div>
             </div>
             <div class="content">
