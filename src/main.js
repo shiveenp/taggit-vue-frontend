@@ -4,9 +4,11 @@ import router from "./router";
 import store from "./store";
 import Buefy from 'buefy'
 import VueLazyload from 'vue-lazyload'
+import Paginate from 'vuejs-paginate'
 
 Vue.use(Buefy);
 Vue.use(VueLazyload);
+Vue.component('paginate', Paginate);
 
 Vue.config.productionTip = false;
 
