@@ -1,17 +1,19 @@
 <template>
-    <div class="container">
+    <div>
         <div class="section">
-            <h1 class="title">Welcome, {{ userName }}! 🤩</h1>
+            <div class="container">
+                <div class="columns">
+                    <div class="column">
+                        <h1 class="title">Welcome, {{ userName }}! 🤩</h1>
+                    </div>
+                    <div class="column">
+                        <button size="is-small" class="button is-primary" icon-left="reload" @click="resyncRepos">Sync
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
         <b-loading v-if="isLoading" :active="isLoading" :can-cancel="false"/>
-        <div class="section">
-            <b-tooltip class="is-pulled-right" label="Sync starred repos with github again">
-                <button class="button is-primary has-tooltip" data-tooltip="Tooltip Text">
-                    <b-icon icon="reload"></b-icon>
-                    <span @click="resyncRepos">Resync</span>
-                </button>
-            </b-tooltip>
-        </div>
         <div class="section">
             <TagsList/>
         </div>
@@ -19,7 +21,7 @@
             <Repos/>
         </div>
         <hr>
-        <section>
+        <div class="section">
             <div>
                 <b-pagination
                         :total="total"
@@ -32,17 +34,18 @@
                         aria-previous-label="Previous page"
                         aria-page-label="Page"
                         aria-current-label="Current page"
-                v-on:change="pageClickCallBack">
+                        v-on:change="pageClickCallBack">
                 </b-pagination>
             </div>
-        </section>
+        </div>
         <hr>
         <section>
             <div>
                 <footer class="footer">
                     <div class="content has-text-centered">
                         <p>
-                            <strong>TAGGIT</strong> by <a href="https://shiveenp.com">Shiveen Pandita</a>. The source code is
+                            <strong>TAGGIT</strong> by <a href="https://shiveenp.com">Shiveen Pandita</a>. The source
+                            code is
                             licensed
                             <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
                             is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
