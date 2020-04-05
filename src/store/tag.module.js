@@ -20,7 +20,10 @@ const mutations = {
     state.allTags = data;
   },
   addTag(state, data) {
-    state.allTags.push(data);
+    let presentIndex = state.allTags.findIndex(tag => tag === data);
+    if (presentIndex === -1) {
+      state.allTags.push(data);
+    }
   },
   removeTag(state, data) {
     state.allTags = state.allTags.filter(function (value) {
