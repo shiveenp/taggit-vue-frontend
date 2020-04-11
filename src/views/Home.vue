@@ -3,12 +3,11 @@
         <div class="section">
             <div class="container">
                 <div class="columns">
-                    <div class="column">
+                    <div class="column is-two-thirds">
                         <h1 class="title">Welcome, {{ userName }}! 🤩</h1>
                     </div>
                     <div class="column">
-                        <button size="is-small" class="button is-primary" icon-left="reload" @click="resyncRepos">Sync
-                        </button>
+                        <RepoSync/>
                     </div>
                 </div>
             </div>
@@ -61,21 +60,17 @@
   import {mapGetters} from "vuex";
   import Repos from "../components/Repos";
   import TagsList from "../components/TagsList";
-  import axios from "axios";
-  import {TAGGIT_BASE_API_URL} from "../common/config";
+  import RepoSync from "../components/RepoSync";
 
   export default {
     name: "User",
-    components: {TagsList, Repos},
+    components: {TagsList, Repos, RepoSync},
     computed: {
       ...mapGetters(["userName", "email", "githubUserName", "githubUserId", "isLoading", "reposToDisplay", "pageNm", "pageSize", "total"])
     },
     methods: {
       fetchUserDetails() {
         this.$store.dispatch('fetchUser', {userId: this.$route.params.userId});
-      },
-      resyncRepos() {
-        axios.post(TAGGIT_BASE_API_URL + "/user/" + this.$route.params.userId + "/sync")
       },
       pageClickCallBack(pageNm) {
         this.$store.dispatch("changePageNm", pageNm)
@@ -89,7 +84,4 @@
 </script>
 
 <style scoped>
-    .no-repos {
-        text-align: center;
-    }
 </style>

@@ -3,12 +3,16 @@ import App from './App.vue'
 import router from "./router";
 import store from "./store";
 import Buefy from 'buefy'
-import VueLazyload from 'vue-lazyload'
-import Paginate from 'vuejs-paginate'
+import VueLazyload from 'vue-lazyload';
+import Paginate from 'vuejs-paginate';
+import VueNativeSock from 'vue-native-websocket';
 
 Vue.use(Buefy);
 Vue.use(VueLazyload);
 Vue.component('paginate', Paginate);
+Vue.use(VueNativeSock, 'ws://localhost:9091', {
+  connectManually: true,
+});
 
 Vue.config.productionTip = false;
 
