@@ -31,14 +31,14 @@
         this.syncStatus = 'Initiated';
         let syncJobId = '';
         axios.post(TAGGIT_BASE_API_URL + "/user/" + this.$route.params.userId + "/sync").then(response => {
-          console.log(response.data);
           syncJobId = response.data;
           this.$connect(TAGGIT_BASE_WS_URI + '/' + syncJobId, {format: 'json'});
           this.$options.sockets.onmessage = (data) => {
             let wsResponse = JSON.parse(data.data);
             this.syncProgressPercent = wsResponse.progressPercent * 100;
             this.syncStatus = wsResponse.status;
-            if (this.syncProgressPercent >= 100) {
+            if (this.syncStatus === 'Update completed!') {
+              this.$buefy.toast.open('Repo sync complete 🚀');
               this.isSyncing = false;
             }
           };
