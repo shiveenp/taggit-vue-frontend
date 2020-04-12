@@ -47,7 +47,5 @@
 </script>
 
 <style scoped>
- .column {
-     height: 100%;
- }
+
 </style>
