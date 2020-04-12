@@ -38,8 +38,11 @@
             this.syncProgressPercent = wsResponse.progressPercent * 100;
             this.syncStatus = wsResponse.status;
             if (this.syncStatus === 'Update completed!') {
-              this.$buefy.toast.open('Repo sync complete 🚀');
+              console.log(this.syncStatus);
+              this.$buefy.toast.open('Repo sync completed 🚀');
               this.isSyncing = false;
+              this.syncProgressPercent = 0;
+              this.syncStatus = '';
             }
           };
         }).catch(function (error) {
