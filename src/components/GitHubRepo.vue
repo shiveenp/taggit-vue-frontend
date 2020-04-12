@@ -1,35 +1,32 @@
 <template>
-    <div class="container">
-        <div class="card card-equal-height">
-            <div class="card-content">
-                <div class="media">
-                    <div class="media-left">
-                        <figure class="image is-32x32">
-                            <img class="is-rounded" v-lazy="ownerAvatarUrl">
-                        </figure>
-                    </div>
-                    <div class="media-content">
-                        <a class="has-text-weight-bold" target="_blank" rel="noopener noreferrer" :href="githubLink">{{
-                            repoName }}</a>
-                    </div>
+    <div class="card">
+        <div class="card-content">
+            <div class="media">
+                <div class="media-left">
+                    <figure class="image is-32x32">
+                        <img class="is-rounded" v-lazy="ownerAvatarUrl">
+                    </figure>
                 </div>
-                <div class="content">
-                    <p>{{ githubDescription }}</p>
+                <div class="media-content">
+                    <a class="has-text-weight-bold" target="_blank" rel="noopener noreferrer" :href="githubLink">{{ repoName }}</a>
                 </div>
-                <div>
-                    <b-field>
-                        <b-taginput
-                                v-model="tags"
-                                ellipsis
-                                icon="label"
-                                placeholder="Add a tag"
-                                size="is-small"
-                                type="is-dark"
-                                v-on:add="saveTag"
-                                v-on:remove="removeTag">
-                        </b-taginput>
-                    </b-field>
-                </div>
+            </div>
+            <div class="content">
+                <p>{{ githubDescription }}</p>
+            </div>
+            <div>
+                <b-field>
+                    <b-taginput
+                            v-model="tags"
+                            ellipsis
+                            icon="label"
+                            placeholder="Add a tag"
+                            size="is-small"
+                            type="is-dark"
+                            v-on:add="saveTag"
+                            v-on:remove="removeTag">
+                    </b-taginput>
+                </b-field>
             </div>
         </div>
     </div>
@@ -37,7 +34,7 @@
 
 <script>
   import axios from "axios";
-  import {TAGGIT_BASE_API_URL} from "../common/config";
+  import { TAGGIT_BASE_API_URL } from "../common/config";
 
   export default {
     data() {
@@ -82,18 +79,5 @@
 </script>
 
 <style scoped>
-    .card-equal-height {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
 
-    .card-equal-height .card-footer {
-        margin-top: auto;
-    }
-
-    .card {
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        border-radius: 0.5rem;
-    }
 </style>
