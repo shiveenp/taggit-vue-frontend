@@ -48,7 +48,6 @@ const mutations = {
 const actions = {
   fetchUser({ commit }, params) {
     commit('fetchingData');
-    console.log(params.userId);
     axios.get(TAGGIT_BASE_API_URL + '/user/' + params.userId, {
       headers: {
         'Content-Type': 'application/json'
