@@ -28,7 +28,7 @@
     methods: {
       resyncRepos() {
         this.isSyncing = true;
-        this.syncStatus = 'Initiated';
+        this.syncStatus = 'Sync started';
         let syncJobId = '';
         axios.post(TAGGIT_BASE_API_URL + "/user/" + this.$route.params.userId + "/sync").then(response => {
           syncJobId = response.data;
