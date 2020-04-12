@@ -1,16 +1,14 @@
 <template>
-    <div class="container is-fluid">
-        <div class="columns is-multiline is-mobile">
-            <div class="column" v-for="repo in reposToDisplay" :key="repo.id">
-                <GithubRepo
-                  :id="repo.id"
-                  :repo-name="repo.repoName"
-                  :github-link="repo.githubLink"
-                  :github-description="repo.githubDescription"
-                  :owner-avatar-url="repo.ownerAvatarUrl"
-                  :metadata="repo.metadata"
-                />
-            </div>
+    <div class="columns is-multiline is-mobile">
+        <div class="column" v-for="repo in reposToDisplay" :key="repo.id">
+            <GithubRepo
+                    :id="repo.id"
+                    :repo-name="repo.repoName"
+                    :github-link="repo.githubLink"
+                    :github-description="repo.githubDescription"
+                    :owner-avatar-url="repo.ownerAvatarUrl"
+                    :metadata="repo.metadata"
+            />
         </div>
     </div>
 </template>
@@ -47,7 +45,7 @@
 </script>
 
 <style scoped>
- .column {
-     height: 100%;
- }
+    .column {
+        height: 100%;
+    }
 </style>
