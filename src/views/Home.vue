@@ -5,7 +5,7 @@
                 <div class="column">
                     <h1 class="title">{{ userName }}'s stars 🤩</h1>
                 </div>
-                <div class="column">
+                <div ref="repoSync" class="column">
                     <RepoSync/>
                 </div>
             </div>
@@ -56,9 +56,11 @@
 
 <script>
   import {mapGetters} from "vuex";
+  import axios from "axios";
   import Repos from "../components/Repos";
   import TagsList from "../components/TagsList";
   import RepoSync from "../components/RepoSync";
+  import {TAGGIT_BASE_API_URL} from "../common/config";
 
   export default {
     name: "User",
@@ -69,6 +71,13 @@
     methods: {
       fetchUserDetails() {
         this.$store.dispatch('fetchUser', {userId: this.$route.params.userId});
+        // check if user has repos
+        axios.get(TAGGIT_BASE_API_URL + '/user/' + this.$route.params.userId + '/repos').then(response => {
+          if (response.data.data.length === 0) {
+            this.$store.dispatch('resyncRepos', {vmInstance: this, userId: this.$route.params.userId});
+            this.$store.dispatch('fetchRepos', {userId: this.$route.params.userId});
+          }
+        });
       },
       pageClickCallBack(pageNm) {
         this.$store.dispatch("changePageNm", pageNm)

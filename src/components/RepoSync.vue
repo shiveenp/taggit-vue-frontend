@@ -13,40 +13,16 @@
 </template>
 
 <script>
-  import axios from "axios";
-  import {TAGGIT_BASE_API_URL, TAGGIT_BASE_WS_URI} from "../common/config";
+  import {mapGetters} from "vuex"
 
   export default {
     name: "RepoSync",
-    data() {
-      return {
-        isSyncing: false,
-        syncProgressPercent: 0,
-        syncStatus: ''
-      }
+    computed: {
+      ...mapGetters(["isSyncing", "syncProgressPercent", "syncStatus"])
     },
     methods: {
       resyncRepos() {
-        this.isSyncing = true;
-        this.syncStatus = 'Sync started';
-        let syncJobId = '';
-        axios.post(TAGGIT_BASE_API_URL + "/user/" + this.$route.params.userId + "/sync").then(response => {
-          syncJobId = response.data;
-          this.$connect(TAGGIT_BASE_WS_URI + '/' + syncJobId, {format: 'json'});
-          this.$options.sockets.onmessage = (data) => {
-            let wsResponse = JSON.parse(data.data);
-            this.syncProgressPercent = wsResponse.progressPercent * 100;
-            this.syncStatus = wsResponse.status;
-            if (this.syncStatus === 'Update completed!') {
-              this.$buefy.toast.open('Repo sync completed 🚀');
-              this.isSyncing = false;
-              this.syncProgressPercent = 0;
-              this.syncStatus = '';
-            }
-          };
-        }).catch(function (error) {
-          console.log(error);
-        });
+        this.$store.dispatch('resyncRepos', {vmInstance: this, userId: this.$route.params.userId});
       }
     }
   }

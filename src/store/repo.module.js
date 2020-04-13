@@ -1,16 +1,28 @@
 import axios from "axios";
 import qs from "qs";
-import { TAGGIT_BASE_API_URL } from "../common/config";
+import {TAGGIT_BASE_API_URL, TAGGIT_BASE_WS_URI} from "../common/config";
 
 const state = {
+  isSyncing: false,
+  syncProgressPercent: 0,
+  syncStatus: '',
   repos: [],
   reposToDisplay: [],
   pageNm: '1',
-  pageSize: '50',
+  pageSize: '51',
   total: ''
 };
 
 const getters = {
+  isSyncing(state) {
+    return state.isSyncing;
+  },
+  syncProgressPercent(state) {
+    return state.syncProgressPercent;
+  },
+  syncStatus(state) {
+    return state.syncStatus;
+  },
   repos(state) {
     return state.repos;
   },
@@ -29,6 +41,13 @@ const getters = {
 };
 
 const mutations = {
+  changeIsSyncing(state, data) {
+    state.isSyncing = data;
+  },
+  getSyncProgress(state, data) {
+    state.syncProgressPercent = data.progressPercent * 100;
+    state.syncStatus = data.status;
+  },
   getRepoData(state, data) {
     state.repos = data.data;
     state.reposToDisplay = data.data;
@@ -43,14 +62,35 @@ const mutations = {
 };
 
 const actions = {
-  fetchRepos({ commit }, params) {
+  resyncRepos({commit}, params) {
+    commit("changeIsSyncing", true)
+    commit("getSyncProgress", {progressPercent: 0, status: 'SyncStarted'});
+    axios.post(TAGGIT_BASE_API_URL + "/user/" + params.userId + "/sync").then(response => {
+      let syncJobId = response.data;
+      params.vmInstance.$connect(TAGGIT_BASE_WS_URI + '/' + syncJobId, {format: 'json'});
+      params.vmInstance.$options.sockets.onmessage = (data) => {
+        let wsResponse = JSON.parse(data.data);
+        commit("getSyncProgress", wsResponse);
+        if (state.syncStatus === 'Update completed!') {
+          params.vmInstance.$buefy.toast.open('Repo sync completed, please refresh page 🚀');
+        }
+      };
+    }).catch(function (error) {
+      console.log(error);
+    }).finally(function () {
+      commit("changeIsSyncing", true)
+      commit("getSyncProgress", {progressPercent: 0, status: ''});
+    });
+  }
+  ,
+  fetchRepos({commit}, params) {
     commit('fetchingData');
     axios.get(TAGGIT_BASE_API_URL + '/user/' + params.userId + '/repos' + '?pageNm=' + state.pageNm + '&pageSize=' + state.pageSize, {
       headers: {
         'Content-Type': 'application/json'
       }
     })
-        .then(({ data }) => {
+        .then(({data}) => {
           commit('getRepoData', data);
           commit('fetchFinished')
         })
@@ -59,19 +99,19 @@ const actions = {
           throw new Error(error);
         });
   },
-  fetchReposUsingTags({ commit }, params) {
+  fetchReposUsingTags({commit}, params) {
     commit('fetchingData');
     axios.get(TAGGIT_BASE_API_URL + '/user/' + params.userId + '/repo/search', {
       params: {
         tag: params.tags
       },
-      paramsSerializer: function(params) {
+      paramsSerializer: function (params) {
         return qs.stringify(params, {arrayFormat: 'repeat'})
       },
       headers: {
         'Content-Type': 'application/json'
       }
-    }).then(({ data }) => {
+    }).then(({data}) => {
       commit('getActiveTagRepoData', data);
       commit('fetchFinished')
     })

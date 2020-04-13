@@ -1,8 +1,6 @@
 <template>
-    <div class="container is-fluid">
-        <div class="buttons">
-            <TagButton v-for="tag in allTags" v-bind:key="tag" v-bind:tag="tag"></TagButton>
-        </div>
+    <div class="buttons">
+        <TagButton v-for="tag in allTags" v-bind:key="tag" v-bind:tag="tag"></TagButton>
     </div>
 </template>
 
