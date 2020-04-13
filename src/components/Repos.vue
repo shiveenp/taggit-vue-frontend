@@ -1,6 +1,6 @@
 <template>
     <div class="columns is-multiline is-mobile">
-        <div class="column" v-for="repo in reposToDisplay" :key="repo.id">
+        <div class="column is-one-third" v-for="repo in reposToDisplay" :key="repo.id">
             <GithubRepo
                     :id="repo.id"
                     :repo-name="repo.repoName"
@@ -45,7 +45,9 @@
 </script>
 
 <style scoped>
-    .column {
-        height: 100%;
+    .columns {
+        display: flex;
+        flex-direction: row;
+    align-items: stretch;
     }
 </style>
