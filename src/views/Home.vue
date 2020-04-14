@@ -17,7 +17,7 @@
         <div class="section">
             <Repos/>
         </div>
-        <div v-if="activeTags.length === 0" class="section">
+        <div v-if="activeTags.length === 0 && reposToDisplay.length !== 0" class="section">
             <hr>
             <div>
                 <b-pagination
@@ -97,10 +97,6 @@
 </script>
 
 <style scoped>
-    .no-repos {
-        text-align: center;
-    }
-
     .bmc-button img {
         height: 34px !important;
         width: 35px !important;

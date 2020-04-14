@@ -1,14 +1,25 @@
 <template>
-    <div class="columns is-multiline is-mobile">
-        <div class="column is-one-third" v-for="repo in reposToDisplay" :key="repo.id">
-            <GithubRepo
-                    :id="repo.id"
-                    :repo-name="repo.repoName"
-                    :github-link="repo.githubLink"
-                    :github-description="repo.githubDescription"
-                    :owner-avatar-url="repo.ownerAvatarUrl"
-                    :metadata="repo.metadata"
-            />
+    <div>
+        <div class="columns is-multiline is-mobile">
+            <div class="column is-one-third" v-for="repo in reposToDisplay" :key="repo.id">
+                <GithubRepo
+                        :id="repo.id"
+                        :repo-name="repo.repoName"
+                        :github-link="repo.githubLink"
+                        :github-description="repo.githubDescription"
+                        :owner-avatar-url="repo.ownerAvatarUrl"
+                        :metadata="repo.metadata"
+                />
+            </div>
+        </div>
+        <div v-if="reposToDisplay.length === 0" class="hero">
+            <div class="hero-body">
+                <div class="container">
+                    <h3 class="title is-centered no-repos">
+                        No repos found, either sync or go on starring at Github
+                    </h3>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -45,9 +56,12 @@
 </script>
 
 <style scoped>
+    .no-repos {
+        text-align: center;
+    }
     .columns {
         display: flex;
         flex-direction: row;
-    align-items: stretch;
+        align-items: stretch;
     }
 </style>
