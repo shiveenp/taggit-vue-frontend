@@ -2,14 +2,16 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '../views/Login'
 import Home from "../views/Home";
+import Account from "../views/Account";
 
 Vue.use(Router);
 
 export default new Router({
   mode: 'history',
   routes: [
-    {path: '/', component: Login},
-    {path: '/user/:userId', component: Home},
+    {path: '/', name: 'login', component: Login},
+    {path: '/user/:userId', name: 'home', component: Home},
+    {path: '/user/:userId/account', name: 'account', component: Account},
 
     // otherwise redirect to home
     {path: '*', redirect: '/'}

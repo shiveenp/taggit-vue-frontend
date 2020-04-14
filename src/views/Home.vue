@@ -2,11 +2,21 @@
     <div class="container">
         <div class="section">
             <div class="columns">
-                <div class="column">
+                <div class="column is-one-third">
                     <h1 class="title">{{ userName }}'s stars 🤩</h1>
                 </div>
-                <div ref="repoSync" class="column">
+                <div class="column">
                     <RepoSync/>
+                </div>
+                <div class="column">
+                    <b-dropdown hoverable aria-role="list">
+                        <figure class="image is-32x32" slot="trigger" role="button">
+                            <img class="is-rounded" v-lazy="userAvatarUrl">
+                        </figure>
+
+                        <b-dropdown-item aria-role="listitem" v-on:click="gotoUpdateProfile()">Update Profile</b-dropdown-item>
+                        <b-dropdown-item aria-role="listitem">Logout</b-dropdown-item>
+                    </b-dropdown>
                 </div>
             </div>
         </div>
@@ -67,12 +77,14 @@
   import TagsList from "../components/TagsList";
   import RepoSync from "../components/RepoSync";
   import {TAGGIT_BASE_API_URL} from "../common/config";
+  import UpdateProfile from "./Account";
 
   export default {
     name: "User",
     components: {TagsList, Repos, RepoSync},
     computed: {
-      ...mapGetters(["userName", "email", "githubUserName", "githubUserId", "isLoading", "reposToDisplay", "pageNm", "pageSize", "total", "activeTags"])
+      ...mapGetters(["userName", "email", "githubUserName", "githubUserId", "isLoading", "reposToDisplay", "pageNm", "pageSize", "total", "activeTags",
+        "userAvatarUrl"])
     },
     methods: {
       fetchUserDetails() {
@@ -88,6 +100,9 @@
       pageClickCallBack(pageNm) {
         this.$store.dispatch("changePageNm", pageNm)
         this.$store.dispatch('fetchRepos', {userId: this.$route.params.userId});
+      },
+      gotoUpdateProfile() {
+        this.$router.push({ name: 'account', params: { userId: this.$route.params.userId }});
       }
     },
     created() {

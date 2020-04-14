@@ -7,6 +7,7 @@ const state = {
   email: '',
   githubUserName: '',
   githubUserId: '',
+  userAvatarUrl: '',
   isLoading: true,
 };
 
@@ -23,6 +24,9 @@ const getters = {
   githubUserId(state) {
     return state.githubUserId
   },
+  userAvatarUrl(state) {
+    return state.userAvatarUrl;
+  },
   isLoading(state) {
     return state.isLoading
   }
@@ -38,6 +42,7 @@ const mutations = {
     state.email = data.email;
     state.githubUserName = data.githubUserName;
     state.githubUserId = data.githubUserId;
+    state.userAvatarUrl = data.avatarUrl;
     state.isLoading = false;
   },
   fetchFinished(state) {
