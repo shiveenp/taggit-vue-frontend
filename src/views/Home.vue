@@ -17,8 +17,8 @@
         <div class="section">
             <Repos/>
         </div>
-        <hr>
-        <div class="section">
+        <div v-if="activeTags.length === 0" class="section">
+            <hr>
             <div>
                 <b-pagination
                         :total="total"
@@ -66,7 +66,7 @@
     name: "User",
     components: {TagsList, Repos, RepoSync},
     computed: {
-      ...mapGetters(["userName", "email", "githubUserName", "githubUserId", "isLoading", "reposToDisplay", "pageNm", "pageSize", "total"])
+      ...mapGetters(["userName", "email", "githubUserName", "githubUserId", "isLoading", "reposToDisplay", "pageNm", "pageSize", "total", "activeTags"])
     },
     methods: {
       fetchUserDetails() {
