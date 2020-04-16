@@ -10,7 +10,7 @@
             <div class="card">
                 <header class="card-header">
                     <p class="card-header-title">
-                        Persona Information
+                        Personal Information
                     </p>
                 </header>
                 <div class="card-content">
