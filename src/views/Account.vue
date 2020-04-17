@@ -1,12 +1,11 @@
 <template>
     <div class="container">
         <div class="section">
+            <b-button type="is-link" icon-left="arrow-left" v-on:click="goBack">
+                Go Back
+            </b-button>
         </div>
         <div class="section">
-            <h2 class="title">
-                Profile
-            </h2>
-            <p class="subtitle">Your personal information</p>
             <div class="card">
                 <header class="card-header">
                     <p class="card-header-title">
@@ -14,24 +13,144 @@
                     </p>
                 </header>
                 <div class="card-content">
-                    <b-field label="User Name" label-position="on-border">
-                        <b-input type=""></b-input>
-                    </b-field>
+                    <div class="media">
+                        <div class="media-left">
+                            <figure class="image is-48x48">
+                                <img class="is-rounded" :src="userAvatarUrl">
+                            </figure>
+                        </div>
+                        <div class="media-content">
+                            <p class="title is-4">{{ userName }}</p>
+                            <p class="subtitle is-6">@ {{ githubUserName }}</p>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <b-field label="User Name" label-position="on-border">
+                            <b-input :disabled="isInputDisabled"
+                                     ref="userNameInput"
+                                     type="text"
+                                     required
+                                     validation-message="Username is not valid"
+                                     :placeholder="userName"
+                                     v-model="inputUserName"></b-input>
+                        </b-field>
 
-                    <b-field label="Email" label-position="on-border">
-                        <b-input type="email">
-                        </b-input>
-                    </b-field>
+                        <b-field label="Email" label-position="on-border">
+                            <b-input :disabled="isInputDisabled"
+                                     ref="userEmailInput"
+                                     type="email"
+                                     :placeholder="email"
+                                     v-model="inputEmail">
+                            </b-input>
+                        </b-field>
+                        <b-field class="is-grouped">
+                            <div class="control">
+                                <button class="button is-primary" v-if="isInputDisabled === true"
+                                        v-on:click="enablePersonalInfoInput">Edit Info
+                                </button>
+                            </div>
+                            <div class="control">
+                                <button class="button is-primary"
+                                        v-if="isInputDisabled === false"
+                                        v-on:click="updatePersonalInfo()">Save
+                                </button>
+                            </div>
+                            <div class="control">
+                                <button class="button is-primary" v-if="isInputDisabled === false"
+                                        v-on:click="disablePersonalInfoInput">Cancel
+                                </button>
+                            </div>
+                        </b-field>
+                    </div>
                 </div>
             </div>
-            <button class="is-small is-primary">Edit Info</button>
+            <hr>
+            <div class="section">
+                <p class="subtitle">Your repo data</p>
+                <b-button type="is-warning">Delete all repo data and hard resync</b-button>
+            </div>
+            <hr>
+            <div class="section">
+                <p class="subtitle">Saying goodbye? 😞</p>
+                <b-button type="is-danger">Delete account and any existing data</b-button>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+  import {TAGGIT_BASE_API_URL} from "../common/config";
+  import {mapGetters} from "vuex";
+  import axios from 'axios';
+
   export default {
-    name: "UpdateProfile"
+    name: "UpdateProfile",
+    computed: {
+      ...mapGetters(["userName", "email", "githubUserName", "userAvatarUrl"])
+    },
+    data() {
+      return {
+        isInputDisabled: true,
+        inputUserName: '',
+        inputEmail: ''
+      }
+    },
+    methods: {
+      fetchUserDetails() {
+        this.$store.dispatch('fetchUser', {userId: this.$route.params.userId});
+      },
+      enablePersonalInfoInput() {
+        this.isInputDisabled = false;
+        this.inputUserName = this.userName;
+        this.inputEmail = this.email;
+      },
+      disablePersonalInfoInput() {
+        this.isInputDisabled = true;
+        this.inputUserName = '';
+        this.inputEmail = '';
+      },
+      updatePersonalInfo() {
+        if (!this.$refs.userNameInput.checkHtml5Validity() || !this.$refs.userEmailInput.checkHtml5Validity()){
+          this.$buefy.toast.open({
+            message: 'Please fix errors before clicking save',
+            type: 'is-danger'
+          });
+          return
+        }
+        axios.put(TAGGIT_BASE_API_URL + '/user/' + this.$route.params.userId, {
+              userName: this.inputUserName,
+              email: this.inputEmail
+            },
+            {
+              'Content-Type': 'application/json'
+            }).then(response => {
+          if (response.status === 200) {
+            this.$buefy.toast.open({
+              message: 'Personal information successfully updated!',
+              type: 'is-success'
+            });
+          } else {
+            this.$buefy.toast.open({
+              message: 'Unable to update personal information right now',
+              type: 'is-danger'
+            });
+          }
+          this.isInputDisabled = true;
+          this.fetchUserDetails();
+        }).catch(error => {
+          this.$buefy.toast.open({
+            message: 'Unable to update personal information right now',
+            type: 'is-danger'
+          });
+        });
+      },
+      goBack() {
+        this.$router.go(-1);
+      }
+    },
+    created() {
+      this.fetchUserDetails();
+    }
   }
 </script>
 
