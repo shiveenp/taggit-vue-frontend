@@ -21,7 +21,7 @@
                         </div>
                         <div class="media-content">
                             <p class="title is-4">{{ userName }}</p>
-                            <p class="subtitle is-6">@ {{ githubUserName }}</p>
+                            <p class="subtitle is-6"><a target="_blank" rel="noopener noreferrer" :href="userGithubLink">@ {{ githubUserName }}</a></p>
                         </div>
                     </div>
                     <div class="content">
@@ -86,6 +86,9 @@
   export default {
     name: "UpdateProfile",
     computed: {
+      userGithubLink:  function () {
+        return 'https://github.com/' + this.githubUserName;
+      },
       ...mapGetters(["userName", "email", "githubUserName", "userAvatarUrl"])
     },
     data() {
@@ -142,6 +145,7 @@
             message: 'Unable to update personal information right now',
             type: 'is-danger'
           });
+          console.log(error);
         });
       },
       goBack() {
