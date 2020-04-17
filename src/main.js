@@ -7,7 +7,9 @@ import VueLazyload from 'vue-lazyload';
 import Paginate from 'vuejs-paginate';
 import VueNativeSock from 'vue-native-websocket';
 
-Vue.use(Buefy);
+Vue.use(Buefy, {
+  defaultIconPack: 'fas'
+});
 Vue.use(VueLazyload);
 Vue.use(VueNativeSock, 'ws://localhost:9090', {
   connectManually: true,
