@@ -1,24 +1,33 @@
 <template>
     <div class="container">
         <div class="section">
-            <div class="columns">
-                <div class="column is-one-third">
-                    <h1 class="title">{{ userName }}'s stars 🤩</h1>
-                </div>
-                <div class="column">
-                    <RepoSync/>
-                </div>
-                <div class="column">
-                    <b-dropdown hoverable aria-role="list">
-                        <figure class="image is-32x32" slot="trigger" role="button">
-                            <img class="is-rounded" v-lazy="userAvatarUrl">
-                        </figure>
+            <b-navbar>
+                <template slot="start">
+                    <b-navbar-item>
+                        <h1 class="title">{{ userName }}'s stars</h1>
+                    </b-navbar-item>
+                    <b-navbar-item>
+                        <RepoSync/>
+                    </b-navbar-item>
+                </template>
+                <template slot="end">
+                    <b-navbar-item>
+                        <ul>
+                            <li>
+                                <b-dropdown position="is-bottom-left" append-to-body trap-focus aria-role="list">
+                                    <figure class="image is-32x32" slot="trigger" role="button">
+                                        <img class="is-rounded" v-lazy="userAvatarUrl">
+                                    </figure>
 
-                        <b-dropdown-item aria-role="listitem" v-on:click="gotoUpdateProfile()">Update Profile</b-dropdown-item>
-                        <b-dropdown-item aria-role="listitem">Logout</b-dropdown-item>
-                    </b-dropdown>
-                </div>
-            </div>
+                                    <b-dropdown-item aria-role="listitem" v-on:click="gotoUpdateProfile()">Update Profile
+                                    </b-dropdown-item>
+                                    <b-dropdown-item aria-role="listitem">Logout</b-dropdown-item>
+                                </b-dropdown>
+                            </li>
+                        </ul>
+                    </b-navbar-item>
+                </template>
+            </b-navbar>
         </div>
         <b-loading v-if="isLoading" :active="isLoading" :can-cancel="false"/>
         <div class="section">
@@ -102,7 +111,7 @@
         this.$store.dispatch('fetchRepos', {userId: this.$route.params.userId});
       },
       gotoUpdateProfile() {
-        this.$router.push({ name: 'account', params: { userId: this.$route.params.userId }});
+        this.$router.push({name: 'account', params: {userId: this.$route.params.userId}});
       }
     },
     created() {

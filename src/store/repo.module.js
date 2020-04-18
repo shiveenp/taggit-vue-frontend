@@ -73,12 +73,12 @@ const actions = {
         commit("getSyncProgress", wsResponse);
         if (state.syncStatus === 'Update completed!') {
           params.vmInstance.$buefy.toast.open('Repo sync completed, please refresh page 🚀');
+          commit("changeIsSyncing", false);
         }
       };
     }).catch(function (error) {
       console.log(error);
-    }).finally(function () {
-      commit("changeIsSyncing", true)
+      commit("changeIsSyncing", false);
       commit("getSyncProgress", {progressPercent: 0, status: ''});
     });
   }

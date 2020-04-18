@@ -1,14 +1,11 @@
 <template>
-    <div class="columns">
-        <div class="column is-one-fifth">
-            <button size="is-small" class="button is-primary" icon-left="reload" @click="resyncRepos">Sync
-            </button>
-        </div>
-        <div v-if="isSyncing" class="column">
-            <b-progress type="is-info" :value="syncProgressPercent" size="is-medium" show-value>
-                {{ syncStatus }}
-            </b-progress>
-        </div>
+    <div>
+        <b-button v-if="!isSyncing" type="submit" size="is-small" class="button is-primary" icon-left="sync"
+                @click="resyncRepos">Sync
+        </b-button>
+        <b-button loading v-if="isSyncing" size="is-small" class="button is-primary" icon-left="sync"
+                @click="resyncRepos">Sync
+        </b-button>
     </div>
 </template>
 
