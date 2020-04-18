@@ -66,11 +66,6 @@
             </div>
             <hr>
             <div class="section">
-                <p class="subtitle">Your repo data</p>
-                <b-button type="is-warning">Delete all repo data and hard resync</b-button>
-            </div>
-            <hr>
-            <div class="section">
                 <p class="subtitle">Saying goodbye? 😞</p>
                 <b-button type="is-danger">Delete account and any existing data</b-button>
             </div>
