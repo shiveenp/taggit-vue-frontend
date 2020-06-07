@@ -86,7 +86,6 @@
   import TagsList from "../components/TagsList";
   import RepoSync from "../components/RepoSync";
   import {TAGGIT_BASE_API_URL} from "../common/config";
-  import UpdateProfile from "./Account";
 
   export default {
     name: "User",

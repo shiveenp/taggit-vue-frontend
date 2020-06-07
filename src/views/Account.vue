@@ -16,12 +16,13 @@
                     <div class="media">
                         <div class="media-left">
                             <figure class="image is-48x48">
-                                <img class="is-rounded" :src="userAvatarUrl">
+                                <img class="is-rounded" :src="userAvatarUrl" alt="">
                             </figure>
                         </div>
                         <div class="media-content">
                             <p class="title is-4">{{ userName }}</p>
-                            <p class="subtitle is-6"><a target="_blank" rel="noopener noreferrer" :href="userGithubLink">@ {{ githubUserName }}</a></p>
+                            <p class="subtitle is-6"><a target="_blank" rel="noopener noreferrer"
+                                                        :href="userGithubLink">@ {{ githubUserName }}</a></p>
                         </div>
                     </div>
                     <div class="content">
@@ -40,6 +41,7 @@
                                      ref="userEmailInput"
                                      type="email"
                                      :placeholder="email"
+
                                      v-model="inputEmail">
                             </b-input>
                         </b-field>
@@ -67,7 +69,19 @@
             <hr>
             <div class="section">
                 <p class="subtitle">Saying goodbye? 😞</p>
-                <b-button type="is-danger">Delete account and any existing data</b-button>
+                <b-button
+                        v-if="!isUserGettingDeleted"
+                        type="is-danger"
+                        @click="deleteUserAccount"
+                >Delete account and any existing data
+                </b-button>
+                <b-button
+                        loading
+                        v-if="isUserGettingDeleted"
+                        type="is-danger"
+                        @click="deleteUserAccount"
+                >Delete account and any existing data
+                </b-button>
             </div>
         </div>
     </div>
@@ -81,7 +95,7 @@
   export default {
     name: "UpdateProfile",
     computed: {
-      userGithubLink:  function () {
+      userGithubLink: function () {
         return 'https://github.com/' + this.githubUserName;
       },
       ...mapGetters(["userName", "email", "githubUserName", "userAvatarUrl"])
@@ -90,7 +104,8 @@
       return {
         isInputDisabled: true,
         inputUserName: '',
-        inputEmail: ''
+        inputEmail: '',
+        isUserGettingDeleted: false,
       }
     },
     methods: {
@@ -108,7 +123,7 @@
         this.inputEmail = '';
       },
       updatePersonalInfo() {
-        if (!this.$refs.userNameInput.checkHtml5Validity() || !this.$refs.userEmailInput.checkHtml5Validity()){
+        if (!this.$refs.userNameInput.checkHtml5Validity() || !this.$refs.userEmailInput.checkHtml5Validity()) {
           this.$buefy.toast.open({
             message: 'Please fix errors before clicking save',
             type: 'is-danger'
@@ -145,6 +160,24 @@
       },
       goBack() {
         this.$router.go(-1);
+      },
+      deleteUserAccount() {
+        this.isUserGettingDeleted = true;
+        axios.delete(TAGGIT_BASE_API_URL + '/user/' + this.$route.params.userId)
+            .then((response) => {
+              this.isUserGettingDeleted = false;
+              this.$buefy.toast.open({
+                message: 'Account delete successfull',
+                type: 'is-success'
+              });
+            }).catch((error) => {
+              this.isUserGettingDeleted = false;
+          this.$buefy.toast.open({
+            message: 'Unexpected error while deleting user, please try again later',
+            type: 'is-danger'
+          });
+          console.log(error);
+        })
       }
     },
     created() {
